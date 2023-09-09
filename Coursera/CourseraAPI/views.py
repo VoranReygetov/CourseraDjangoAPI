@@ -113,3 +113,15 @@ def booklist(request):
 def welcome(request):
     data = '<html><body><h1>Welcome to CourseraAPI Project</h1></body></html>'
     return Response(data)
+
+@api_view(['GET', 'POST']) 
+def menu_items(request):
+    if request.method == 'GET':
+        items = Book.objects.select_related('genre').all()
+        serialized_items = BookSerializerRead(items, many=True)
+        return Response(serialized_items.data)
+    if request.method == 'POST':
+        serialized_items = BookSerializerRead(data= request.data)
+        serialized_items.is_valid(raise_exception=True)
+        serialized_items.save       #validated_data
+        return Response(serialized_items.data, status=status.HTTP_201_CREATED)
