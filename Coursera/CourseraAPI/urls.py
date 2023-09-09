@@ -11,7 +11,9 @@ from rest_framework.routers import SimpleRouter
 urlpatterns = (
 [   path('__debug__/', include('debug_toolbar.urls')),
     path('books', views.BookView.as_view()),
-    path('books/<int:pk>',views.SingleBookView.as_view()),
+    path('books/<int:pk>',views.SingleBookView.as_view(), name='book-detail'),
+    path('genre/<int:pk>',views.GenreView.as_view(), name='genre-detail'),
+    path('books_list',views.booklist),
 #     path('books/', views.BookView.as_view({
 #         'get': 'list',
 #         'post': 'create',

@@ -12,6 +12,9 @@ from rest_framework.viewsets import ViewSet
 from rest_framework import generics
 from .models import *
 from .serializers import *
+from django.shortcuts import get_object_or_404
+from rest_framework.renderers import TemplateHTMLRenderer
+from rest_framework.decorators import api_view, renderer_classes
 
 # Create your views here.
 
@@ -92,3 +95,15 @@ class BookView(generics.ListCreateAPIView):
 class SingleBookView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+
+class GenreView(generics.RetrieveAPIView):
+    queryset = Genre.objects.all()
+    serializer_class = GenreSerializer
+
+
+@api_view() 
+@renderer_classes ([TemplateHTMLRenderer])
+def booklist(request):
+    items = Book.objects.select_related('genre').all()
+    serialized_item = BookSerializerRead(items, many=True)
+    return Response({'data':serialized_item.data}, template_name='books-items.html')
