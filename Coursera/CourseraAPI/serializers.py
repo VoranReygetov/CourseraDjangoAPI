@@ -19,6 +19,7 @@ class BookSerializer(serializers.ModelSerializer):
         model = Book
         fields = ['id','title','author','price','stock', 'price_after_discount','genre','genre_id']
         depth=1
+        extra_kwargs = {'price':{'min_value':1}, 'inventory':{'min_value':0}}       #min vals for variables
 
     def calculate_discount(self, product:Book):
         return round(product.price * Decimal(0.8), ndigits=2)

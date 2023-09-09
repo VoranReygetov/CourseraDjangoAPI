@@ -13,7 +13,7 @@ from rest_framework import generics
 from .models import *
 from .serializers import *
 from django.shortcuts import get_object_or_404
-from rest_framework.renderers import TemplateHTMLRenderer
+from rest_framework.renderers import TemplateHTMLRenderer, StaticHTMLRenderer
 from rest_framework.decorators import api_view, renderer_classes
 
 # Create your views here.
@@ -107,3 +107,9 @@ def booklist(request):
     items = Book.objects.select_related('genre').all()
     serialized_item = BookSerializerRead(items, many=True)
     return Response({'data':serialized_item.data}, template_name='books-items.html')
+
+@api_view(['GET'])
+@renderer_classes([StaticHTMLRenderer])
+def welcome(request):
+    data = '<html><body><h1>Welcome to CourseraAPI Project</h1></body></html>'
+    return Response(data)

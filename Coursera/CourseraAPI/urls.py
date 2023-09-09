@@ -14,6 +14,7 @@ urlpatterns = (
     path('books/<int:pk>',views.SingleBookView.as_view(), name='book-detail'),
     path('genre/<int:pk>',views.GenreView.as_view(), name='genre-detail'),
     path('books_list',views.booklist),
+    path('welcome',views.welcome),
 #     path('books/', views.BookView.as_view({
 #         'get': 'list',
 #         'post': 'create',
