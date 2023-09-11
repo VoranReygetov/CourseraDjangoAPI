@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+<meta charset="UTF-8" />
+    <title>Menu Items</title>
+  </head>
+  <body>
+
+    <table width="100%" style="text-align: left">
+
+      <tr>
+
+        <th>Item</th>
+        <!-- item column heading -->
+
+        <th>Genre</th>
+        
+        <th>Author</th>
+
+        <th>Price</th>
+        <!-- price column heading -->
+
+        <th>Price After Discount</th>
+        <!-- price after tax column heading -->
+
+        <th>Stock</th>
+        <!-- stock column heading -->
+
+      </tr>
+{% for item in data %} 
+      <tr>
+
+        <td>{{ item.title }}</td>
+        
+        <td>{{ item.genre }}</td>
+
+        <td>{{ item.author }}</td>
+
+        <td>{{ item.price }}</td>
+
+        <td>{{ item.price_after_discount }}</td>
+
+        <td>{{ item.stock }}</td>
+
+      </tr>
+{% endfor %} 
+    </table>
+  </body>
+</html>
