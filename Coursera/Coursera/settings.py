@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'CourseraAPI.apps.CourseraapiConfig',
     'rest_framework',
     'debug_toolbar',
+    'django_filters',
 ]
 
 MIDDLEWARE = [

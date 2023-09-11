@@ -13,6 +13,8 @@ urlpatterns = (
     path('books', views.BookView.as_view()),
     path('books/<int:pk>',views.SingleBookView.as_view(), name='book-detail'),
     path('genre/<int:pk>',views.GenreView.as_view(), name='genre-detail'),
+    path('book-surl',views.BookUrlView.as_view(), name='book-url-detail'),
+    path('book-genre-name',views.BookGenreView.as_view(), name='book-url-detail'),
     path('books_list',views.booklist),
     path('welcome',views.welcome),
 #     path('books/', views.BookView.as_view({

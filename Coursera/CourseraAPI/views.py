@@ -88,12 +88,59 @@ from rest_framework.decorators import api_view, renderer_classes
 #         return Response({"message":"Deleting a book"}, status.HTTP_200_OK)
 
 class BookView(generics.ListCreateAPIView):
-    queryset = Book.objects.all()
+    queryset = Book.objects.select_related('genre').all()
+    def get(self, request):
+        genre_name = request.query_params.get('genre')
+        to_price = request.query_params.get('to_price')
+        search = request.query_params.get('search')
+        order_by = request.query_params.get('order_by')
+        if genre_name:
+            self.queryset = self.queryset.filter(genre__name = genre_name)
+        if to_price:
+            self.queryset = self.queryset.filter(price__lte = to_price)
+        if search:
+            self.queryset = self.queryset.filter(title__icontains = search)
+        if order_by:
+            order_by_fields = order_by.split(",") 
+            self.queryset = self.queryset.order_by(*order_by_fields)
+        serializer_class = BookSerializer(self.queryset.all(), many = True)
+        return Response(serializer_class.data)
     serializer_class = BookSerializer
 
+class BookUrlView(BookView):
+    def get(self, request):
+        to_price = request.query_params.get('to_price')
+        search = request.query_params.get('search')
+        order_by = request.query_params.get('order_by')
+        if to_price:
+            self.queryset = self.queryset.filter(price__lte = to_price)
+        if search:
+            self.queryset = self.queryset.filter(title__icontains = search)
+        if order_by:
+            order_by_fields = order_by.split(",") 
+            self.queryset = self.queryset.order_by(*order_by_fields)
+        serializer_class = BookSerializerURLtoBook(self.queryset.all(), many = True, context={'request': request})
+        return Response(serializer_class.data)
+    serializer_class = BookSerializerURLtoBook
+
+class BookGenreView(BookView):
+    def get(self, request):
+        to_price = request.query_params.get('to_price')
+        search = request.query_params.get('search')
+        order_by = request.query_params.get('order_by')
+        if to_price:
+            self.queryset = self.queryset.filter(price__lte = to_price)
+        if search:
+            self.queryset = self.queryset.filter(title__icontains = search)
+        if order_by:
+            order_by_fields = order_by.split(",") 
+            self.queryset = self.queryset.order_by(*order_by_fields)
+        serializer_class = BookSerializerRead(self.queryset.all(), many = True)
+        return Response(serializer_class.data)
+    serializer_class = BookSerializerRead
 
 class SingleBookView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Book.objects.all()
+    queryset = Book.objects.select_related('genre').all()
     serializer_class = BookSerializer
 
 class GenreView(generics.RetrieveAPIView):
