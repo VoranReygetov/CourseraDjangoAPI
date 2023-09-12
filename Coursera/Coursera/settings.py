@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'CourseraAPI.apps.CourseraapiConfig',
     'rest_framework',
+    'rest_framework.authtoken',
     'debug_toolbar',
     'django_filters',
 ]
@@ -139,5 +140,22 @@ REST_FRAMEWORK = {
         'rest_framework_xml.renderers.XMLRenderer',
         'rest_framework_csv.renderers.CSVRenderer',
         'rest_framework_yaml.renderers.YAMLRenderer',
-    ]
+    ],
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.OrderingFilter',
+        'rest_framework.filters.SearchFilter',
+    ],
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    # 'PAGE_SIZE': 2,
+        'DEFAULT_AUTHENTICATION_CLASSES': (
+        # 'rest_framework.authentication.SessionAuthentication',  # Use session-based authentication (recommended for web browsers)
+        # 'rest_framework.authentication.BasicAuthentication',    # Use basic authentication
+        'rest_framework.authentication.TokenAuthentication',    # Use token-based authentication
+    ),
+    'DEFAULT_THROTTLE_RATES':{
+        'anon':'10/minute',
+        'user':'10/minute',
+        'ten':'10/minute',
+    }
 }
