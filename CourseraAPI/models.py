@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Genre(models.Model):
@@ -20,3 +21,8 @@ class Book(models.Model):
         return f'{self.title}: {self.author}'
     class Meta:
         indexes = [models.Index(fields=['price']),]
+
+class Rating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    book_id =  models.ForeignKey(Book, on_delete=models.SET_NULL, null=True)
+    rating = models.SmallIntegerField()

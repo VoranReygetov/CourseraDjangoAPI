@@ -39,8 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'CourseraAPI.apps.CourseraapiConfig',
     'rest_framework',
+    'rest_framework.authtoken',
     'debug_toolbar',
     'django_filters',
+    'djoser',
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
+
 ]
 
 MIDDLEWARE = [
@@ -139,5 +144,31 @@ REST_FRAMEWORK = {
         'rest_framework_xml.renderers.XMLRenderer',
         'rest_framework_csv.renderers.CSVRenderer',
         'rest_framework_yaml.renderers.YAMLRenderer',
-    ]
-}
+    ],
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.OrderingFilter',
+        'rest_framework.filters.SearchFilter',
+    ],
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    # 'PAGE_SIZE': 2,
+        'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',  # Use session-based authentication (recommended for web browsers)
+        # 'rest_framework.authentication.BasicAuthentication',    # Use basic authentication
+        'rest_framework.authentication.TokenAuthentication',    # Use token-based authentication
+        'rest_framework_simplejwt.authentication.JWTAuthentication',  # Use JWT Authentication
+    ),
+    'DEFAULT_THROTTLE_RATES':{
+        'anon':'10/minute',
+        'user':'10/minute',
+        'ten':'10/minute',
+    },
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'    
+    ],
+    }
+DJOSER = {
+    'USER_ID_FIELD':'username',
+    # 'LOGIN_FIELD':'email',
+    }
